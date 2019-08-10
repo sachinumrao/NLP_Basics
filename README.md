@@ -18,3 +18,5 @@ NLP tutorials
 ### Tut-3 Named Entity Recognition
 
 ### Tut-4 NLTK Intro
+
+### Tut-5 Textblob for Sentiment Analysis
