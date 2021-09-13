@@ -16,6 +16,7 @@ def index():
     return {"message": "This is NER api."}
 
 @app.post("/score_ner")
-def score_ner(text: str):
+def score_ner(data):
+    text = data["text"]
     entities = get_entities(text)
     return {"entities": entities}
