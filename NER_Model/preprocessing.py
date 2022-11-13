@@ -56,7 +56,7 @@ def main():
 
     # preprocess training data
     train_file_path = os.path.join(data_folder, "train.json")
-    train_processed = preprcocess(train_file_path, tokenizer)
+    train_processed = preprocess(train_file_path, tokenizer)
     save_to_jsonlines(
         train_processed, os.path.join(data_folder, "train_processed.jsonl")
     )

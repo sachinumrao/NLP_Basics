@@ -1,5 +1,5 @@
 import torch
-from torch.data import Dataset
+from torch.utils.data import Dataset
 
 
 class NerDataset(Dataset):
@@ -16,11 +16,11 @@ class NerDataset(Dataset):
         return self.n
 
     def __getitem__(self, idx):
-        input_ids = data[idx]["token_ids"]
-        ner_tags = data[idx]["ner_tags"]
+        input_ids = self.data[idx]["token_ids"]
+        ner_tags = self.data[idx]["tag_ids"]
 
         # append 0 to pad to max length
-        if len(token_ids) >= self.max_len:
+        if len(input_ids) >= self.max_len:
             input_ids = input_ids[: self.max_len]
             ner_tags = ner_tags[: self.max_len]
             token_type_ids = [0] * self.max_len
@@ -33,12 +33,10 @@ class NerDataset(Dataset):
             ner_tags = ner_tags + [0] * padding_len
 
         encoding = {
-            "input_ids": torch.tensor(input_ids, dtype=torch.long),
+            "ids": torch.tensor(input_ids, dtype=torch.long),
             "token_type_ids": torch.tensor(token_type_ids, dtype=torch.long),
-            "attention_masks": torch.tensor(attention_masks, dtype=torch.long),
+            "mask": torch.tensor(attention_masks, dtype=torch.long),
+            "ner_tags": torch.tensor(ner_tags, dtype=torch.long),
         }
 
-        ner_tags = torch.tensor(ner_tags, dtype=torch.long)
-        return encoding, ner_tags
-
-        pass
+        return encoding
