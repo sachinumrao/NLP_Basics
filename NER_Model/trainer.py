@@ -75,7 +75,7 @@ def main():
     )
 
     # intantiate model
-    model = BertNer(ner_config.NUM_TAGS, ner_config.DROPOUT)
+    model = BertNer(ner_config.NUM_TAGS, ner_config.DROPOUT, ner_config.BERT_FREEZE)
     optimizer = AdamW(model.parameters(), lr=ner_config.LR)
 
     # training loops

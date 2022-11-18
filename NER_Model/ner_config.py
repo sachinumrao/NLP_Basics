@@ -20,10 +20,8 @@ NUM_TAGS = len(TAG_MAP)
 LR = 1e-3
 DROPOUT = 0.2
 NUM_EPOCHS = 5
+BERT_FREEZE = True
 
 BASE_MODEL = "bert-base-uncased"
 MODEL_OPUTPUT_DIR = "/home/sachin/Data/conll2003/model/"
 DATA_FOLDER = "/home/sachin/Data/conll2003/"
-
-DEVICE = torch.device('cpu')
-#DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
