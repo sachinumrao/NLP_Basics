@@ -1,5 +1,5 @@
 import os
-
+from accelerate import Accelerator
 import torch
 import torch.nn as nn
 from torch.optim.adamw import AdamW
@@ -12,19 +12,23 @@ from ner_dataset import NerDataset
 from utils import load_jsonl_data
 
 # from transformers import AdamW, get_linear_schedule_with_warmup
+accelearator = Accelerator()
 
 
 def train_fn(data_loader, model, optimizer):
     model.train()
     final_loss = 0
 
+    # optimize model with accelerate
+    model, optimizer, data_loader = accelearator.prepare(model, optimizer, data_loader)
     for data in tqdm(data_loader, total=len(data_loader)):
-        for k, v in data.items():
-            data[k] = v.to(ner_config.DEVICE)
+        # for k, v in data.items():
+            # data[k] = v.to(ner_config.DEVICE)
 
         optimizer.zero_grad()
         loss = model(**data)
-        loss.backward()
+        accelearator.backward(loss)
+
         optimizer.step()
         final_loss += loss.item()
 
@@ -34,9 +38,11 @@ def train_fn(data_loader, model, optimizer):
 def eval_fn(data_loader, model):
     model.eval()
     final_loss = 0
+
+    model, data_loader = accelearator.prepare(model, data_loader)
     for data in tqdm(data_loader, total=len(data_loader)):
-        for k, v in data.items():
-            data[k] = v.to(ner_config.DEVICE)
+        # for k, v in data.items():
+            # data[k] = v.to(ner_config.DEVICE)
         loss = model(**data)
         final_loss += loss.item()
     return final_loss / len(data_loader)
