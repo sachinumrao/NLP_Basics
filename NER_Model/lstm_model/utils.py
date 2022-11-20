@@ -50,7 +50,7 @@ def generate_conll2003_embeddings():
     word2index["<pad>"] = 1
     embed_array.append(init_embedding())
 
-    word2index["<unk>"] = 0 
+    word2index["<unk>"] = 0
     embed_array.append(init_embedding())
 
     data = []

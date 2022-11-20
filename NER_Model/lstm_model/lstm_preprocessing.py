@@ -1,7 +1,8 @@
-import pathlib
 import json
-import jsonlines
+import pathlib
 from collections import defaultdict
+
+import jsonlines
 from tqdm.auto import tqdm
 
 import config
@@ -26,7 +27,7 @@ def save_to_jsonlines(data, path):
 
 def preprocess(file_path, word2idx):
     transformed_data = []
-    
+
     data = []
     with open(file_path, "r") as f:
         for line in f:
@@ -36,10 +37,10 @@ def preprocess(file_path, word2idx):
         tokens = sample["tokens"]
         ner_tags = sample["ner_tags"]
         pos_tags = sample["pos_tags"]
-        
+
         # get token ids
         token_ids = [word2idx.get(w.lower()) for w in tokens]
-                            
+
         # apply padding
         n = len(token_ids)
         if n > MAX_LEN:
@@ -49,11 +50,11 @@ def preprocess(file_path, word2idx):
         else:
             token_ids += [1] * (MAX_LEN - n)
             ner_tags += [0] * (MAX_LEN - n)
-            pos_tags += [47] * (MAX_LEN -n)
+            pos_tags += [47] * (MAX_LEN - n)
         sample_dict = {
             "token_ids": token_ids,
             "ner_tags": ner_tags,
-            "pos_tags": pos_tags
+            "pos_tags": pos_tags,
         }
         transformed_data.append(sample_dict)
 
